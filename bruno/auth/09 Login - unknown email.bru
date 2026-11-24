@@ -1,0 +1,29 @@
+meta {
+  name: Login - unknown email
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "nobody_{{authEmail}}",
+    "password": "wrong-password"
+  }
+}
+
+assert {
+  res.status: eq 401
+  res.body.token: isUndefined
+}
+
+tests {
+  test("same message as wrong password (no user enumeration)", function () {
+    expect(res.body.message).to.equal(bru.getVar("wrongPasswordMessage"));
+  });
+}

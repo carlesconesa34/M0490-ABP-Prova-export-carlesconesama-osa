@@ -1,0 +1,36 @@
+meta {
+  name: Patch article
+  type: http
+  seq: 10
+}
+
+patch {
+  url: {{baseUrl}}/articles/{{articleId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Títol modificat"
+  }
+}
+
+docs {
+  PATCH only changes the fields sent; `content` must stay the same.
+}
+
+assert {
+  res.status: eq 200
+  res.body.title: eq Títol modificat
+}
+
+tests {
+  test("keeps the fields that were not sent", function () {
+    expect(res.getBody().content).to.equal(bru.getVar("articleContent"));
+  });
+}

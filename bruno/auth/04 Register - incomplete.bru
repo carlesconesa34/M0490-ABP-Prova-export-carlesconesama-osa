@@ -1,0 +1,22 @@
+meta {
+  name: Register - incomplete
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "incomplete@example.com"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.message: isString
+}

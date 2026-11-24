@@ -1,0 +1,28 @@
+meta {
+  name: Me
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/auth/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{authToken}}
+}
+
+assert {
+  res.status: eq 200
+  res.body.email: eq {{authEmail}}
+  res.body.username: eq {{authUsername}}
+}
+
+tests {
+  test("never returns the password or its hash", function () {
+    expect(res.getBody()).to.have.all.keys("id", "email", "username");
+    expect(JSON.stringify(res.getBody())).to.not.include("$argon2");
+  });
+}

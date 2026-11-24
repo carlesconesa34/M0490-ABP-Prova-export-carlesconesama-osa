@@ -1,0 +1,40 @@
+meta {
+  name: Helmet headers
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/articles
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.headers["x-content-type-options"]: eq nosniff
+  res.headers["strict-transport-security"]: eq max-age=31536000; includeSubDomains
+  res.headers["referrer-policy"]: eq no-referrer
+  res.headers["cross-origin-opener-policy"]: eq same-origin
+  res.headers["x-dns-prefetch-control"]: eq off
+  res.headers["x-permitted-cross-domain-policies"]: eq none
+  res.headers["x-xss-protection"]: eq "0"
+  ~res.headers["cross-origin-resource-policy"]: eq same-site
+  ~res.headers["x-frame-options"]: eq DENY
+}
+
+tests {
+  /* Simplify helmet
+  test("strict Content-Security-Policy for a JSON API", function () {
+    const csp = res.getHeader("content-security-policy");
+    expect(csp).to.include("default-src 'none'");
+    expect(csp).to.include("frame-ancestors 'none'");
+    expect(csp).to.include("base-uri 'none'");
+    expect(csp).to.include("form-action 'none'");
+  });
+  */
+
+  test("does not reveal the framework (no X-Powered-By)", function () {
+    expect(res.getHeader("x-powered-by")).to.be.undefined;
+  });
+}

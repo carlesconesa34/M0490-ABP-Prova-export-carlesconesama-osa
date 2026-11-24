@@ -1,0 +1,23 @@
+meta {
+  name: Register - invalid email
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "not-an-email",
+    "username": "valid_name",
+    "password": "Sup3r-Secret-Pass!"
+  }
+}
+
+assert {
+  res.status: eq 400
+}

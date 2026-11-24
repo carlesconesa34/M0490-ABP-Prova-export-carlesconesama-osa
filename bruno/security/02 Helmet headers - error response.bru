@@ -1,0 +1,19 @@
+meta {
+  name: Helmet headers - error response
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/articles
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 401
+  res.headers["x-content-type-options"]: eq nosniff
+  res.headers["strict-transport-security"]: isString
+  res.headers["content-security-policy"]: isString
+  res.headers["x-powered-by"]: isUndefined
+}

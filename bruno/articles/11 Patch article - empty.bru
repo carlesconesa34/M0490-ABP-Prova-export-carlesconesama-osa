@@ -1,0 +1,23 @@
+meta {
+  name: Patch article - empty
+  type: http
+  seq: 11
+}
+
+patch {
+  url: {{baseUrl}}/articles/{{articleId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {}
+}
+
+assert {
+  res.status: eq 400
+}

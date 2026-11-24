@@ -1,0 +1,26 @@
+meta {
+  name: HTTP redirects to HTTPS
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{httpUrl}}/articles?page=1
+  body: none
+  auth: none
+}
+
+settings {
+  followRedirects: false
+}
+
+assert {
+  res.status: eq 308
+  res.headers["x-powered-by"]: isUndefined
+}
+
+tests {
+  test("Location points to the same resource over HTTPS", function () {
+    expect(res.getHeader("location")).to.equal(`${bru.getEnvVar("baseUrl")}/articles?page=1`);
+  });
+}

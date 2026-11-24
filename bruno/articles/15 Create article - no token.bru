@@ -1,0 +1,29 @@
+meta {
+  name: Create article - no token
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{baseUrl}}/articles
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Sense token",
+    "content": "No s'hauria de crear"
+  }
+}
+
+assert {
+  res.status: eq 401
+  res.headers["www-authenticate"]: eq Bearer
+}
+
+tests {
+  test("does not create the article", function () {
+    expect(res.body.id).to.be.undefined;
+  });
+}

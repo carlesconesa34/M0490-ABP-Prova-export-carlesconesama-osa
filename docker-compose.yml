@@ -1,0 +1,15 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: article-backend
+    env_file: .env
+    ports:
+      - "5000:5000"   # HTTP  -> redirects to HTTPS
+      - "5443:5443"   # HTTPS
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+      - ./bruno:/usr/src/bruno   # API tests, run from inside the container
+    command: ["npm", "run", "dev"]

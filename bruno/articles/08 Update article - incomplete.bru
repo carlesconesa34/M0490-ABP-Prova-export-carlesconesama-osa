@@ -1,0 +1,29 @@
+meta {
+  name: Update article - incomplete
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/articles/{{articleId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Només el títol"
+  }
+}
+
+docs {
+  PUT replaces the whole resource, so both `title` and `content` are required.
+}
+
+assert {
+  res.status: eq 400
+}

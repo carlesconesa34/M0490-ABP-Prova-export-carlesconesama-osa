@@ -1,0 +1,21 @@
+meta {
+  name: Patch article - no token
+  type: http
+  seq: 17
+}
+
+patch {
+  url: {{baseUrl}}/articles/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Hack"
+  }
+}
+
+assert {
+  res.status: eq 401
+}

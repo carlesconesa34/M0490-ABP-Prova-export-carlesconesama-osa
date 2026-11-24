@@ -1,0 +1,16 @@
+meta {
+  name: Get article - still exists after rejected writes
+  type: http
+  seq: 19
+}
+
+get {
+  url: {{baseUrl}}/articles/1
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.title: neq Hack
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Delete article - no token
+  type: http
+  seq: 18
+}
+
+delete {
+  url: {{baseUrl}}/articles/1
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 401
+}

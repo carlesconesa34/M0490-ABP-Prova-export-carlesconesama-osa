@@ -1,0 +1,24 @@
+meta {
+  name: Create article - no body
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/articles
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+docs {
+  No body and no `Content-Type: application/json` header, so `req.body` is
+  `undefined`. The route should answer 400, not crash with a 500.
+}
+
+assert {
+  res.status: eq 400
+}

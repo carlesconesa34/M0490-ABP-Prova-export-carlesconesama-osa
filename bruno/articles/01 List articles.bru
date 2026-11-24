@@ -1,0 +1,25 @@
+meta {
+  name: List articles
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/articles
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("returns an array of articles", function () {
+    const body = res.getBody();
+    expect(body).to.be.an("array");
+    body.forEach(article => {
+      expect(article).to.have.all.keys("id", "title", "content");
+    });
+  });
+}

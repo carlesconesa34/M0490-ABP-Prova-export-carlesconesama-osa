@@ -1,0 +1,6 @@
+node_modules/
+
+*.log
+# Secrets and local TLS certificates
+.env
+backend/certs/

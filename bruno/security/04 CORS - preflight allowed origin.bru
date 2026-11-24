@@ -1,0 +1,25 @@
+meta {
+  name: CORS - preflight allowed origin
+  type: http
+  seq: 4
+}
+
+options {
+  url: {{baseUrl}}/articles
+  body: none
+  auth: none
+}
+
+headers {
+  Origin: {{allowedOrigin}}
+  Access-Control-Request-Method: POST
+  Access-Control-Request-Headers: Content-Type, Authorization
+}
+
+assert {
+  res.status: eq 204
+  res.headers["access-control-allow-origin"]: eq {{allowedOrigin}}
+  res.headers["access-control-allow-methods"]: eq GET,POST,PUT,PATCH,DELETE
+  res.headers["access-control-allow-headers"]: eq Content-Type,Authorization
+  res.headers["access-control-max-age"]: eq "600"
+}

@@ -1,0 +1,27 @@
+meta {
+  name: CORS - allowed origin
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/articles
+  body: none
+  auth: none
+}
+
+headers {
+  Origin: {{allowedOrigin}}
+}
+
+assert {
+  res.status: eq 200
+  res.headers["access-control-allow-origin"]: eq {{allowedOrigin}}
+  res.headers["access-control-allow-credentials"]: isUndefined
+}
+
+tests {
+  test("Vary: Origin so caches do not mix origins", function () {
+    expect(res.getHeader("vary")).to.include("Origin");
+  });
+}

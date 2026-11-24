@@ -1,0 +1,25 @@
+meta {
+  name: CORS - blocked origin
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/articles
+  body: none
+  auth: none
+}
+
+headers {
+  Origin: {{blockedOrigin}}
+}
+
+assert {
+  res.headers["access-control-allow-origin"]: isUndefined
+}
+
+tests {
+  test("no wildcard origin", function () {
+    expect(res.getHeader("access-control-allow-origin")).to.not.equal("*");
+  });
+}

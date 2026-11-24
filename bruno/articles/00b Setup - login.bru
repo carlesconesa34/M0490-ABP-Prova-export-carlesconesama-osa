@@ -1,0 +1,28 @@
+meta {
+  name: Setup - login
+  type: http
+  seq: 0
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{articlesEmail}}",
+    "password": "{{articlesPassword}}"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.token: isString
+}
+
+script:post-response {
+  // Token used by every write request in this folder
+  bru.setVar("token", res.body.token);
+}

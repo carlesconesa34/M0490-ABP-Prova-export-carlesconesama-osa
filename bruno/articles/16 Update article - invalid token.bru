@@ -1,0 +1,26 @@
+meta {
+  name: Update article - invalid token
+  type: http
+  seq: 16
+}
+
+put {
+  url: {{baseUrl}}/articles/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: invalid.token.value
+}
+
+body:json {
+  {
+    "title": "Hack",
+    "content": "No s'hauria de modificar"
+  }
+}
+
+assert {
+  res.status: eq 401
+}

@@ -1,0 +1,16 @@
+meta {
+  name: Get article
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/articles/{{articleId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.id: eq {{articleId}}
+}

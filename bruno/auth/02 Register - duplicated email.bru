@@ -1,0 +1,31 @@
+meta {
+  name: Register - duplicated email
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{authEmail}}",
+    "username": "another_{{authUsername}}",
+    "password": "{{authPassword}}"
+  }
+}
+
+assert {
+  res.status: eq 409
+}
+
+tests {
+  test("never returns the password or its hash", function () {
+    const raw = JSON.stringify(res.getBody());
+    expect(raw).to.not.include(bru.getVar("authPassword"));
+    expect(raw).to.not.include("$argon2");
+  });
+}

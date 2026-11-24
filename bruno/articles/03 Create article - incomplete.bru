@@ -1,0 +1,26 @@
+meta {
+  name: Create article - incomplete
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/articles
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Article sense contingut"
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.message: isString
+}

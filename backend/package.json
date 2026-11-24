@@ -1,0 +1,28 @@
+{
+  "name": "article-backend",
+  "version": "1.0.0",
+  "description": "API REST backend for article sharing",
+  "license": "ISC",
+  "author": "hcano <hcano@escoladeltreball.org>",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=../.env src/server.js",
+    "dev": "nodemon --exec \"node --env-file-if-exists=../.env\" src/server.js",
+    "test": "node --test --import ./test/setup.js \"test/**/*.test.js\"",
+    "certs": "mkdir -p certs && openssl req -x509 -newkey rsa:2048 -nodes -sha256 -days 365 -keyout certs/key.pem -out certs/cert.pem -subj /CN=localhost -addext subjectAltName=DNS:localhost,IP:127.0.0.1",
+    "bruno": "cd ../bruno && bru run --env local --insecure"
+  },
+  "dependencies": {
+    "argon2": "^0.45.2",
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "@usebruno/cli": "^4.3.0",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.3.2"
+  }
+}

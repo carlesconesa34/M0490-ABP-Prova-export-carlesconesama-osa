@@ -1,0 +1,31 @@
+meta {
+  name: Setup - register
+  type: http
+  seq: 0
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{articlesEmail}}",
+    "username": "{{articlesUsername}}",
+    "password": "{{articlesPassword}}"
+  }
+}
+
+script:pre-request {
+  // Unique user per run: the server keeps users in memory and the collection may run many times
+  const suffix = Date.now().toString(36);
+  bru.setVar("articlesEmail", `articles_${suffix}@example.com`);
+  bru.setVar("articlesUsername", `articles_${suffix}`);
+  bru.setVar("articlesPassword", "Articles-Passw0rd!");
+}
+
+assert {
+  res.status: eq 201
+}

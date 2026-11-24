@@ -1,0 +1,34 @@
+meta {
+  name: HTTP POST redirects with 308
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{httpUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "nobody@example.com",
+    "password": "whatever-password"
+  }
+}
+
+settings {
+  followRedirects: false
+}
+
+assert {
+  res.status: eq 308
+  res.headers["x-powered-by"]: isUndefined
+  res.body.token: isUndefined
+}
+
+tests {
+  test("credentials are never processed over plain HTTP", function () {
+    expect(res.getHeader("location")).to.equal(`${bru.getEnvVar("baseUrl")}/auth/login`);
+  });
+}

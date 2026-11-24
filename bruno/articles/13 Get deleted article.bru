@@ -1,0 +1,15 @@
+meta {
+  name: Get deleted article
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/articles/{{articleId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

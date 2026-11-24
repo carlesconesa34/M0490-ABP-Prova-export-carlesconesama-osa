@@ -1,0 +1,33 @@
+meta {
+  name: Update article
+  type: http
+  seq: 7
+}
+
+put {
+  url: {{baseUrl}}/articles/{{articleId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Article actualitzat",
+    "content": "Contingut actualitzat"
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.id: eq {{articleId}}
+  res.body.title: eq Article actualitzat
+  res.body.content: eq Contingut actualitzat
+}
+
+script:post-response {
+  bru.setVar("articleContent", res.body.content);
+}

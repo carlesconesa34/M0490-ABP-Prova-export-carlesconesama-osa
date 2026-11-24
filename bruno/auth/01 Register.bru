@@ -1,0 +1,48 @@
+meta {
+  name: Register
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "{{authEmail}}",
+    "username": "{{authUsername}}",
+    "password": "{{authPassword}}"
+  }
+}
+
+script:pre-request {
+  // Unique user per run (the server keeps users in memory)
+  const suffix = Date.now().toString(36);
+  bru.setVar("authEmail", `user_${suffix}@example.com`);
+  bru.setVar("authUsername", `user_${suffix}`);
+  bru.setVar("authPassword", "Sup3r-Secret-Pass!");
+}
+
+assert {
+  res.status: eq 201
+  res.body.id: isNumber
+  res.body.email: eq {{authEmail}}
+  res.body.username: eq {{authUsername}}
+}
+
+tests {
+  test("returns only public fields", function () {
+    expect(res.getBody()).to.have.all.keys("id", "email", "username");
+  });
+
+  test("never returns the password or its hash", function () {
+    const raw = JSON.stringify(res.getBody());
+    expect(raw).to.not.include(bru.getVar("authPassword"));
+    expect(raw).to.not.include("$argon2");
+    expect(raw.toLowerCase()).to.not.include("password");
+    expect(raw.toLowerCase()).to.not.include("hash");
+  });
+}

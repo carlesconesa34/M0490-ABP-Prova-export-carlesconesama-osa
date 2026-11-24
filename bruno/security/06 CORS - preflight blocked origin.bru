@@ -1,0 +1,33 @@
+meta {
+  name: CORS - preflight blocked origin
+  type: http
+  seq: 6
+}
+
+options {
+  url: {{baseUrl}}/articles
+  body: none
+  auth: none
+}
+
+headers {
+  Origin: {{blockedOrigin}}
+  Access-Control-Request-Method: DELETE
+  Access-Control-Request-Headers: Authorization
+}
+
+docs {
+  With `origin` as an array, the cors package still sends
+  Access-Control-Allow-Methods/Headers, but never Access-Control-Allow-Origin
+  for an origin outside the list. Without that header the browser blocks the request.
+}
+
+assert {
+  res.headers["access-control-allow-origin"]: isUndefined
+}
+
+tests {
+  test("no wildcard origin", function () {
+    expect(res.getHeader("access-control-allow-origin")).to.not.equal("*");
+  });
+}

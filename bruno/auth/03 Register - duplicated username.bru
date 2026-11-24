@@ -1,0 +1,23 @@
+meta {
+  name: Register - duplicated username
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "another_{{authEmail}}",
+    "username": "{{authUsername}}",
+    "password": "{{authPassword}}"
+  }
+}
+
+assert {
+  res.status: eq 409
+}
