@@ -111,7 +111,7 @@ router.post('/login', async (req, res) => {
 });
 
 // Usuari autenticat
-router.get('/me', (req, res) => {
+router.get('/me', requireAuth, (req, res) => {
     res.json(toPublicUser(req.user));
 });
 

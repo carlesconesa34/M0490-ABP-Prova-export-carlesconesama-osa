@@ -44,9 +44,21 @@ A l'editor, obre el fitxer `src/app.js`.
 
 **Pregunta 0.1:** Busca la ruta `'/'`. Com es relaciona amb el que has vist al navegador?
 
-> _Resposta:_
+> _Resposta:_ La ruta / correspon a la ruta arrel. Quan accedim al navegador mitjançant http://localhost.5000, podem observar que retorna dues variables: name, que per defecte és inicialitzat amb el missatge "REST backend per a la prova M0490-ABP", i la variable version, que correspon a una variable d'entorn del sistema. Ambdues variables es poden veure explícitament a la funció de la línia 24 de l'arxiu app.js
 
 **Modificació 0.1:** Modifica la resposta de la ruta perque afegeixi un camp `author` amb el teu nom.
+
+> La funció resultant és:
+
+```
+app.get("/", (req, res) => {
+  res.json({
+    name: "REST backend per a la prova M0490-ABP",
+    version: process.env.npm_package_version,
+    author: "Carles Conesa Mañosa",
+  });
+});
+```
 
 Verifica a la sortida del terminal que el backend es reinicia per llegir els canvis.
 Verifica en el navegador que efectivament ara retorna el camp `author`.
@@ -65,7 +77,24 @@ Fes correr també els tests de peticions REST.
 
 **Pregunta 0.2b:** Quantes requests prova? Quantes han fallat?
 
-> _Resposta:_
+> _Resposta:_ Prova 41 requests. En el meu cas fallen totes.
+
+```
+📊 Execution Summary
+┌───────────────┬────────────────┐
+│ Metric        │     Result     │
+├───────────────┼────────────────┤
+│ Status        │     ✗ FAIL     │
+├───────────────┼────────────────┤
+│ Requests      │ 41 (41 Failed) │
+├───────────────┼────────────────┤
+│ Tests         │      0/2       │
+├───────────────┼────────────────┤
+│ Assertions    │      1/5       │
+├───────────────┼────────────────┤
+│ Duration (ms) │      549       │
+└───────────────┴────────────────┘
+```
 
 Fes commit dels canvis fins ara:
 
@@ -84,7 +113,7 @@ Obre el fitxer `src/server.js`.
 
 **Pregunta 1.1:** En quin port està escoltant la app? Per què no es connecten aquestes peticions?
 
-> _Resposta:_
+> _Resposta:_ L'app està escoltant el port 5000.
 
 Per poder treballar amb https anem a generar uns certificats auto-signats. En la mateixa terminal en que has fet correr els tests, fes la següent comanda:
 
@@ -97,11 +126,11 @@ Tingues en compte que has de canviar el port.
 
 **Pregunta 1.2:** Per què és millor que la nostra app treballi sobre https?
 
-> _Resposta:_
+> _Resposta:_ És milor que la nostra app treballi sobre https perquè és més segur, ja que autentica la identitat del servidor mitjançant els certificats que hem instal·lat al directori /backend/certs.
 
 **Pregunta 1.3:** Com funciona l'encriptació del tràfic https? Quina mena de xifratge es fa servir?
 
-> _Resposta:_
+> _Resposta:_ HTTPS combina HTTP sobre una connexió segura TLS. Fa servir xifratge híbrid, tant criptografia asimètrica com criptografia simètrica.
 
 Torna a fer correr les proves, i comprova com ha millorat:
 
@@ -133,6 +162,8 @@ Afegeix-lo també a:
 
 **Pregunta 2.1:** Què fa `requireAuth`? Modifica la `request` o la `response`?
 
+> _Resposta:_ requireAuth comprova que la petició inclou un token d'autenticació vàlid. Modifica la request, perquè hi afegeix les dades de l'usuari autenticat extretes del token.
+
 Fes commit dels canvis fins ara:
 
     git add .
@@ -147,7 +178,7 @@ El password s'està emmagatzemant en clar!
 
 **Pregunta 3.1:** Per què això és una mala política de seguretat?
 
-> _Resposta:_
+> _Resposta:_ És una mala política de seguretat enmagatzemar claus en clar perquè, en cas de patir un ciberatac, l'atacant pot recuperar les claus dels usuaris. Per a evitar que l'atacant pugui veure aquesta informació sensible podem fer un hash a les claus.
 
 **Modificació 3.1:** Fes que el password s'emmagatzemi en forma de hash.
 Al mateix `auth.js` tens una funció auxiliar per a fer el hash.
@@ -161,7 +192,7 @@ Tot i que ara ja no es guarda el password en clar, segueix sent mala política r
 
 **Pregunta 3.2:** Per què és mala política de seguretat retornar el hash al client? Quin perill hi ha? Quina mena d'informació conté el hash?
 
-> _Resposta:_
+> _Resposta:_ És una mala política de seguretat perquè d'aquesta manera estem enviant material criptogràfic innecessari que l'usuari no necessita veure, només necessita saber la seva clau real. A més, si enviem el hash, possibles atacants podrien fer servir força bruta per tractar de recuperar les claus dels usuaris.
 
 Fes commit dels canvis fins ara:
 
@@ -182,15 +213,28 @@ Tingues en compte que el nostre _backend_ dona servei a un _frontend_ que corre 
 
 > _Resposta:_
 
+```
+// CORS
+app.use(
+  cors({
+    origin: "https://localhost:5443",
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+    maxAge: 600, // segons que el navegador guarda la resposta del preflight
+  })
+);
+```
+
 **Modificació 4.1:** Modifica la configuració de CORS fins que desapareixin els errors de CORS (4 failed requests en bruno, 6 failed tests)
 
 **Pregunta 4.2:** Per a que serveix CORS?
 
-> _Resposta:_
+> _Resposta:_ El CORS serveix per a limitar quins orígens poden accedir a la nostra aplicació.
 
 **Pregunta 4.3:** Impedeix l'accés al servidor?
 
-> _Resposta:_
+> _Resposta:_ El CORS impedeix l'accés al servidor si l'origen pel qual hi volem accedir no és acceptat pel mateix. Si el CORS acceptés qualsevol origen acceptaria l'accés al servidor des de qualsevol origen, el qual no és massa segur.
 
 Fes commit dels canvis fins ara:
 
@@ -205,13 +249,13 @@ Fixat ara en els errors de Helmet.
 
 **Pregunta 5.1:** La capçalera _x-powered-by_, quina informació dona? Perquè és important no enviar-la?
 
-> _Resposta:_
+> _Resposta:_ Aquesta capçalera dona informació sobre quina tecnologia o framework fa servir el backend per les peticions. A parer meu, no és recomanable enviar-la perquè així no facilitem a possibles atacans la informació sobre el nostre sistema, per així que no pugui fer atacs o exploits específics per a la nostra tecnologia.
 
 **Modificació 5.1:** Afegeix _helmet_ a la app. Comprova que els errors de helmet es corregeixen.
 
 **Pregunta 5.2:** Se t'acut alguna protecció més que es pugui configurar a _helmet_ per sobre dels valors que ja porta per defecte i que sigui interessant en una backend de pur json? Justifica per què. No cal que la apliquis.
 
-> _Resposta:_
+> _Resposta:_ No se m'acut cap.
 
 Fes commit dels canvis fins ara:
 
@@ -226,7 +270,7 @@ Si ens arriba una petició de login amb un usuari que existeix però el password
 
 **Pregunta 6.1:** Per què és important que la resposta trigui aproximadament el mateix existeixi o no l'usuari?
 
-> _Resposta:_
+> _Resposta:_ És important que la resposta trigui més o menys el mateix perquè així no es podrà filtrar a possibles atacants l'existència d'usuaris, així evitant que puguin saber quins comptes o usuaris existeixen i quins no.
 
 **Modificació 6.1:** Modifica la funció de `/auth/login/` per a que triguin el mateix.
 El test `✖ login with an unknown email still runs one argon2 verification with the same cost` hauria de passar a verd.
