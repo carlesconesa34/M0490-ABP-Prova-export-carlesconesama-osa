@@ -1,6 +1,6 @@
 # M0490-ABP-Prova
 
-**Nom i cognoms**:
+**Nom i cognoms**: Carles Conesa Mañosa
 
 ---
 
@@ -45,8 +45,6 @@ A l'editor, obre el fitxer `src/app.js`.
 **Pregunta 0.1:** Busca la ruta `'/'`. Com es relaciona amb el que has vist al navegador?
 
 > _Resposta:_
->
->
 
 **Modificació 0.1:** Modifica la resposta de la ruta perque afegeixi un camp `author` amb el teu nom.
 
@@ -60,8 +58,6 @@ Obre un segon terminal, i fes correr els tests:
 **Pregunta 0.2a:** Quants tests hi ha? Quants han fallat? (Busca les línies de resum, no cal que contis!)
 
 > _Resposta:_
->
->
 
 Fes correr també els tests de peticions REST.
 
@@ -70,8 +66,6 @@ Fes correr també els tests de peticions REST.
 **Pregunta 0.2b:** Quantes requests prova? Quantes han fallat?
 
 > _Resposta:_
->
->
 
 Fes commit dels canvis fins ara:
 
@@ -91,8 +85,6 @@ Obre el fitxer `src/server.js`.
 **Pregunta 1.1:** En quin port està escoltant la app? Per què no es connecten aquestes peticions?
 
 > _Resposta:_
->
->
 
 Per poder treballar amb https anem a generar uns certificats auto-signats. En la mateixa terminal en que has fet correr els tests, fes la següent comanda:
 
@@ -106,14 +98,10 @@ Tingues en compte que has de canviar el port.
 **Pregunta 1.2:** Per què és millor que la nostra app treballi sobre https?
 
 > _Resposta:_
->
->
 
 **Pregunta 1.3:** Com funciona l'encriptació del tràfic https? Quina mena de xifratge es fa servir?
 
 > _Resposta:_
->
->
 
 Torna a fer correr les proves, i comprova com ha millorat:
 
@@ -160,8 +148,6 @@ El password s'està emmagatzemant en clar!
 **Pregunta 3.1:** Per què això és una mala política de seguretat?
 
 > _Resposta:_
->
->
 
 **Modificació 3.1:** Fes que el password s'emmagatzemi en forma de hash.
 Al mateix `auth.js` tens una funció auxiliar per a fer el hash.
@@ -176,8 +162,6 @@ Tot i que ara ja no es guarda el password en clar, segueix sent mala política r
 **Pregunta 3.2:** Per què és mala política de seguretat retornar el hash al client? Quin perill hi ha? Quina mena d'informació conté el hash?
 
 > _Resposta:_
->
->
 
 Fes commit dels canvis fins ara:
 
@@ -197,22 +181,16 @@ Tingues en compte que el nostre _backend_ dona servei a un _frontend_ que corre 
 **Pregunta 4.1:** Que falta afegir o corregir a la configuració?
 
 > _Resposta:_
->
->
 
 **Modificació 4.1:** Modifica la configuració de CORS fins que desapareixin els errors de CORS (4 failed requests en bruno, 6 failed tests)
 
 **Pregunta 4.2:** Per a que serveix CORS?
 
 > _Resposta:_
->
->
 
 **Pregunta 4.3:** Impedeix l'accés al servidor?
 
 > _Resposta:_
->
->
 
 Fes commit dels canvis fins ara:
 
@@ -228,16 +206,12 @@ Fixat ara en els errors de Helmet.
 **Pregunta 5.1:** La capçalera _x-powered-by_, quina informació dona? Perquè és important no enviar-la?
 
 > _Resposta:_
->
->
 
 **Modificació 5.1:** Afegeix _helmet_ a la app. Comprova que els errors de helmet es corregeixen.
 
 **Pregunta 5.2:** Se t'acut alguna protecció més que es pugui configurar a _helmet_ per sobre dels valors que ja porta per defecte i que sigui interessant en una backend de pur json? Justifica per què. No cal que la apliquis.
 
 > _Resposta:_
->
->
 
 Fes commit dels canvis fins ara:
 
@@ -253,8 +227,6 @@ Si ens arriba una petició de login amb un usuari que existeix però el password
 **Pregunta 6.1:** Per què és important que la resposta trigui aproximadament el mateix existeixi o no l'usuari?
 
 > _Resposta:_
->
->
 
 **Modificació 6.1:** Modifica la funció de `/auth/login/` per a que triguin el mateix.
 El test `✖ login with an unknown email still runs one argon2 verification with the same cost` hauria de passar a verd.
@@ -288,8 +260,6 @@ Fes commit dels canvis fins ara:
 **Pregunta 8.1:** Queda algun test en vermell? És important? Per què?
 
 > _Resposta:_
->
->
 
 **Modificació 8.1:** Fes que tots els test passin en verd.
 
