@@ -57,6 +57,8 @@ router.post('/register', async (req, res) => {
         });
     }
 
+    const hashedPassword = await argon2.hash(password, hashConfig);
+
     const exists = users.find(user => user.email === cleanEmail || user.username === cleanUsername);
     if (exists) {
         return res.status(409).json({ message: "El correu electrònic o el nom d'usuari ja estan en ús" });
@@ -66,7 +68,7 @@ router.post('/register', async (req, res) => {
         id: nextId++,
         email: cleanEmail,
         username: cleanUsername,
-        passwordStored: password
+        passwordStored: hashedPassword
     };
     users.push(newUser);
 
